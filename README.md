@@ -1,8 +1,11 @@
-# Nettools
+# NETTOOL
+![aa](https://github.com/user-attachments/assets/c00fc55b-0034-41e0-aa84-89475430abc4)
 
-Simple Network Tools for IP, Reverse DNS Lookup, and Geolocation
+A Simple Network Tools for IP, Reverse DNS Lookup, and Geolocation build in @Python
 
 Nettools is a collection of simple yet powerful Python scripts designed to help you gather essential network information. Whether you're troubleshooting, analyzing, or just curious about an IP address, Nettools provides quick insights into IP geolocation, reverse DNS lookups, and shared hosting information.
+
+
 
 # Features
 
@@ -17,7 +20,7 @@ Nettools is a collection of simple yet powerful Python scripts designed to help 
 # How to Use
 # 1. Clone the repository :
 
-$ git clone https://github.com/your-username/nettools.git
+$ git clone https://github.com/darksq13/Nettools.git
 
 $ cd nettools
 
@@ -27,9 +30,9 @@ $ pip install requests
 
 # 3. Run the script :
 
-$ python nettools.py
+$ python3 nettools.py
 
-# 4. Follow the on-screen prompts to:
+# 4. Follow the on-screen prompts to :
 
     Enter an IP address (or use the host IP by default).
     
@@ -38,6 +41,14 @@ $ python nettools.py
     View geolocation data, reverse DNS results, and shared hosting information.
     
 # 5. SCREENSHOOT
-    
-![Screenshot at 2025-02-14 12-09-40](https://github.com/user-attachments/assets/37f743c7-6806-473d-82be-b8e1c2abb319)
-![Screenshot at 2025-02-14 12-14-02](https://github.com/user-attachments/assets/bcf9a267-4a30-41e6-9112-cd4741c6b095)
+
+![aaa](https://github.com/user-attachments/assets/20747ea9-3d19-41ae-b7e3-284b0ca12da5)
+
+****************************************************************************************************************************************************************************************************************
+
+![bbb](https://github.com/user-attachments/assets/9e3123b6-5515-49f7-b3b7-ae80444563a8)
+
+****************************************************************************************************************************************************************************************************************
+![cccc](https://github.com/user-attachments/assets/0d045f7f-7f6c-4428-9bf7-a5939229adbd)
+
+****************************************************************************************************************************************************************************************************************
