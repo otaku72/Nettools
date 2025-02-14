@@ -34,7 +34,7 @@ def reverse_ip_domain_check(ip_address):
         print(f"\nNo domain name found for IP: {ip_address}")
 
 if __name__ == "__main__":
-    ip_address = input("Enter the IP address: ")
+    ip_address = input("Enter the IP or DNS Hots address: ")
     
     # Get IP Geolocation
     get_ip_geolocation(ip_address)
