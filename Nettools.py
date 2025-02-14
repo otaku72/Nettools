@@ -34,17 +34,20 @@ def get_ip_geolocation(ip_address):
     url = f"http://ip-api.com/json/{ip_address}"
     response = requests.get(url)
     data = response.json()
-    
+
     if data['status'] == 'success':
-        print("\n[+] Geolocation Data:")
+        print("\nIP Geolocation Information:")
         print(f"IP Address: {data['query']}")
         print(f"Country: {data['country']}")
         print(f"Region: {data['regionName']}")
         print(f"City: {data['city']}")
+        print(f"ZIP Code: {data['zip']}")
+        print(f"Latitude: {data['lat']}")
+        print(f"Longitude: {data['lon']}")
         print(f"ISP: {data['isp']}")
-        print(f"Coordinates: {data['lat']}, {data['lon']}")
+        print(f"Organization: {data['org']}")
     else:
-        print("[!] Geolocation lookup failed.")
+        print("Failed to retrieve geolocation information.")
 
 def reverse_ip_domain_check(ip_address):
     """Perform reverse DNS lookup."""
