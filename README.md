@@ -1,7 +1,7 @@
 # NETTOOL
 ![aa](https://github.com/user-attachments/assets/c00fc55b-0034-41e0-aa84-89475430abc4)
 
-A Simple Network Tools for IP, Reverse DNS Lookup, and Geolocation build in @Python
+A Simple Network Tools for IP, Reverse DNS Lookup, and Geolocation build in @Python for @Linux user
 
 Nettools is a collection of simple yet powerful Python scripts designed to help you gather essential network information. Whether you're troubleshooting, analyzing, or just curious about an IP address, Nettools provides quick insights into IP geolocation, reverse DNS lookups, and shared hosting information.
 
@@ -30,7 +30,7 @@ $ pip install requests
 
 # 3. Run the script :
 
-$ python3 nettools.py
+$ python3 Nettools.py
 
 # 4. Follow the on-screen prompts to :
 
