@@ -32,9 +32,12 @@ $ python nettools.py
 # 4. Follow the on-screen prompts to:
 
     Enter an IP address (or use the host IP by default).
-
+    
     Choose between private or public IP for analysis.
 
     View geolocation data, reverse DNS results, and shared hosting information.
-
     
+# 5. SCREENSHOOT
+    
+![Screenshot at 2025-02-14 12-09-40](https://github.com/user-attachments/assets/37f743c7-6806-473d-82be-b8e1c2abb319)
+![Screenshot at 2025-02-14 12-14-02](https://github.com/user-attachments/assets/bcf9a267-4a30-41e6-9112-cd4741c6b095)
