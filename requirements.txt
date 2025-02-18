@@ -1,6 +1,6 @@
 socket
-psutil==5.9.5
-requests>=2.28.2
-colorama>=0.4.6
-scapy~=2.5.0
-pyfiglet==0.8.post1
+psutil
+requests
+colorama
+scapy
+pyfiglet
