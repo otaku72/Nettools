@@ -26,8 +26,7 @@ $ cd nettools
 
 # 2. Install the required dependencies :
 
-$ pip install requests scapy colorama
-
+$ pip install -r requirements.txt
 # 3. Run the script :
 
 $ python3 Nettools.py
