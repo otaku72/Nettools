@@ -4,6 +4,8 @@ import requests
 from colorama import Fore, Style
 from scapy.all import ARP, Ether, srp
 import pyfiglet
+import ipaddress
+
 # ----------------------------
 # Core Functions
 # ----------------------------
@@ -16,8 +18,10 @@ def get_private_ip():
             for address in interface_addresses:
                 if address.family == socket.AF_INET:  # IPv4 addresses only
                     print(f"Interface: {interface_name}, IP Address: {address.address}")
+                    return address.address  # Return the first private IP found
     except Exception as e:
         print(f"Unable to determine private IP: {e}")
+    return None
 
 def get_public_ip():
     """Get the host machine's public IP address."""
@@ -145,6 +149,21 @@ def display_devices(devices):
     for device in devices:
         print(f"{device['ip']}\t\t{device['mac']}\t{device['vendor']}\t\t{device['hostname']}")
 
+def get_network_range(ip_address):
+    """
+    Derive the network range from the private IP address.
+    :param ip_address: The private IP address (e.g., '192.168.1.100')
+    :return: The network range (e.g., '192.168.1.0/24')
+    """
+    try:
+        # Create an IPv4Network object from the IP address
+        ip_interface = ipaddress.IPv4Interface(ip_address + '/24')
+        network = ip_interface.network
+        return str(network)
+    except Exception as e:
+        print(f"[!] Error deriving network range: {e}")
+        return None
+
 # ----------------------------
 # Menu System
 # ----------------------------
@@ -173,7 +192,7 @@ def main_menu():
         
         if choice == "1":
             print("\nPrivate IP Addresses:")
-            get_private_ip()
+            private_ip = get_private_ip()
             public_ip = get_public_ip()
             print(f"\nPublic IP: {public_ip}")
             
@@ -215,12 +234,23 @@ def main_menu():
                 get_shared_domains(ip, api_key)
             else:
                 print("[!] Invalid choice")
+
+# ----------------------------
+# DARK SQ XXIII
+# ----------------------------
                 
         elif choice == "3":
-            ip_range = input("Enter IP range to scan (e.g., 192.168.1.1/24): ").strip()
-            print(f"\nScanning network {ip_range}...")
-            devices = scan_network(ip_range)
-            display_devices(devices)
+            private_ip = get_private_ip()
+            if private_ip:
+                ip_range = get_network_range(private_ip)
+                if ip_range:
+                    print(f"\nScanning network {ip_range}...")
+                    devices = scan_network(ip_range)
+                    display_devices(devices)
+                else:
+                    print("[!] Unable to determine network range.")
+            else:
+                print("[!] No private IP address found.")
                 
         elif choice == "4":
             print("Exiting...")
