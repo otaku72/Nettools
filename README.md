@@ -26,7 +26,7 @@ $ cd nettools
 
 # 2. Install the required dependencies :
 
-$ pip install requests scapy
+$ pip install requests scapy colorama
 
 # 3. Run the script :
 
