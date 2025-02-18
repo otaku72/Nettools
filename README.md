@@ -26,7 +26,7 @@ $ cd nettools
 
 # 2. Install the required dependencies :
 
-$ pip install requests
+$ pip install requests scapy
 
 # 3. Run the script :
 
