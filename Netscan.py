@@ -1,6 +1,18 @@
 from scapy.all import ARP, Ether, srp
 import socket
 import requests
+import pyfiglet
+
+def display_banner():
+    """
+    Display the NETSCAN banner using pyfiglet.
+    """
+    ascii_art = pyfiglet.figlet_format("NETSCAN", font="block")
+    print(ascii_art)
+    print("=" * 60)
+    print("Wi-Fi User Scanner - Scan connected devices on your network")
+    print("=" * 60)
+    print()
 
 def scan_network(ip_range):
     """
@@ -60,17 +72,20 @@ def display_devices(devices):
     Display the list of devices.
     :param devices: A list of devices with IP, MAC, vendor, and hostname.
     """
-    print("Connected Devices:")
-    print("--------------------------------------------------------------")
+    print("\nConnected Devices:")
+    print("=" * 90)
     print("IP Address\t\tMAC Address\t\tVendor\t\t\tHostname")
-    print("--------------------------------------------------------------")
+    print("=" * 90)
     for device in devices:
         print(f"{device['ip']}\t\t{device['mac']}\t{device['vendor']}\t\t{device['hostname']}")
 
 if __name__ == "__main__":
+    # Display the banner
+    display_banner()
+
     # Define the IP range to scan (adjust based on your network)
     ip_range = "192.168.1.1/24"
 
-    print(f"Scanning network {ip_range}...")
+    print(f"Scanning network {ip_range}...\n")
     devices = scan_network(ip_range)
     display_devices(devices)
