@@ -1,20 +1,23 @@
-import requests
+import psutil
 import socket
+import requests
 from colorama import Fore, Style
 from scapy.all import ARP, Ether, srp
 import pyfiglet
-
 # ----------------------------
 # Core Functions
 # ----------------------------
 
 def get_private_ip():
-    """Get the host machine's private IP address."""
+    """Get the IP addresses of all network interfaces (LAN, WLAN, etc.)."""
     try:
-        hostname = socket.gethostname()
-        return socket.gethostbyname(hostname)
+        interfaces = psutil.net_if_addrs()
+        for interface_name, interface_addresses in interfaces.items():
+            for address in interface_addresses:
+                if address.family == socket.AF_INET:  # IPv4 addresses only
+                    print(f"Interface: {interface_name}, IP Address: {address.address}")
     except Exception as e:
-        return "Unable to determine private IP."
+        print(f"Unable to determine private IP: {e}")
 
 def get_public_ip():
     """Get the host machine's public IP address."""
@@ -169,10 +172,10 @@ def main_menu():
         choice = input("\nSelect an option (1-4): ").strip()
         
         if choice == "1":
-            private_ip = get_private_ip()
+            print("\nPrivate IP Addresses:")
+            get_private_ip()
             public_ip = get_public_ip()
-            print(f"\nPrivate IP: {private_ip}")
-            print(f"Public IP: {public_ip}")
+            print(f"\nPublic IP: {public_ip}")
             
             print("\nPerform action on these IPs?")
             print("1. Geolocation")
