@@ -12,6 +12,20 @@ from typing import List, Dict
 
 init(autoreset=True)
 
+def display_banner():
+    banner = f"""
+{Fore.CYAN}
+███╗   ██╗███████╗████████╗████████╗ ██████╗  ██████╗ ██╗     
+████╗  ██║██╔════╝╚══██╔══╝╚══██╔══╝██╔═══██╗██╔═══██╗██║     
+██╔██╗ ██║█████╗     ██║      ██║   ██║   ██║██║   ██║██║     
+██║╚██╗██║██╔══╝     ██║      ██║   ██║   ██║██║   ██║██║     
+██║ ╚████║███████╗   ██║      ██║   ╚██████╔╝╚██████╔╝███████╗
+╚═╝  ╚═══╝╚══════╝   ╚═╝      ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝
+{Fore.YELLOW}Advanced Networking and Cybersecurity Toolkit{Style.RESET_ALL}
+{Fore.MAGENTA}Version 2.0 | by OR Tech Lab{Style.RESET_ALL}
+"""
+print(banner)
+    
 def get_private_ip():
     try:
         interfaces = psutil.net_if_addrs()
@@ -215,6 +229,7 @@ def dns_lookup(domain):
         print(f"{Fore.RED}DNS lookup failed: {e}")
 
 def cli_menu():
+    display_banner()  # Display the banner when the program starts
     parser = argparse.ArgumentParser(description="Nettools - Advanced Networking and Cybersecurity Toolkit")
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
