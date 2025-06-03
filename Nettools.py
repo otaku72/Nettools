@@ -45,7 +45,7 @@ def get_ip_geolocation(ip_address):
     response = requests.get(url)
     data = response.json()
 
-    if data['status'] == 'success':
+    if data['status'] == 'SUCCESS':
         print("\nIP Geolocation Information:")
         print(f"IP Address: {data['query']}")
         print(f"Country: {data['country']}")
