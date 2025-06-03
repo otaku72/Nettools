@@ -227,7 +227,71 @@ def dns_lookup(domain):
         print(f"{Fore.RED}dnspython module not installed. Install with 'pip install dnspython'")
     except Exception as e:
         print(f"{Fore.RED}DNS lookup failed: {e}")
+#####№$###№####
+def cli_menu():
+    display_banner()  # Display the banner when the program starts
+    parser = argparse.ArgumentParser(description="Nettools - Advanced Networking and Cybersecurity Toolkit")
+    subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
+    subparsers.add_parser("private-ip", help="Get all private IP addresses")
+    subparsers.add_parser("public-ip", help="Get public IP address")
+
+    parser_validate = subparsers.add_parser("validate-ip", help="Validate an IP address")
+    parser_validate.add_argument("ip", help="IP address to validate")
+
+    parser_geo = subparsers.add_parser("geoip", help="Geolocate an IP address")
+    parser_geo.add_argument("ip", help="IP address to geolocate")
+
+    parser_reverse = subparsers.add_parser("reverse-dns", help="Reverse DNS lookup")
+    parser_reverse.add_argument("ip", help="IP address for reverse lookup")
+
+    parser_portscan = subparsers.add_parser("port-scan", help="Advanced port scan with security assessment")
+    parser_portscan.add_argument("ip", help="Target IP address")
+    parser_portscan.add_argument("--ports", default="1-1024", help="Port or port range (default 1-1024)")
+    parser_portscan.add_argument("--threads", type=int, default=100, 
+                               help="Number of threads (default 100)")
+
+    parser_banner = subparsers.add_parser("banner-grab", help="Grab service banner")
+    parser_banner.add_argument("ip", help="Target IP address")
+    parser_banner.add_argument("port", help="Target port")
+
+    parser_netscan = subparsers.add_parser("netscan", help="Scan local network for devices")
+    parser_netscan.add_argument("range", help="CIDR or IP range (e.g. 192.168.1.1/24)")
+
+    parser_whois = subparsers.add_parser("whois", help="Whois lookup")
+    parser_whois.add_argument("domain", help="Domain name")
+
+    parser_dns = subparsers.add_parser("dns", help="DNS lookup (A record)")
+    parser_dns.add_argument("domain", help="Domain name")
+
+    args = parser.parse_args()
+
+    if args.command == "private-ip":
+        get_private_ip()
+    elif args.command == "public-ip":
+        get_public_ip()
+    elif args.command == "validate-ip":
+        validate_ip(args.ip)
+    elif args.command == "geoip":
+        get_ip_geolocation(args.ip)
+    elif args.command == "reverse-dns":
+        reverse_ip_domain_check(args.ip)
+    elif args.command == "port-scan":
+        port_scan(args.ip, args.ports, args.threads)
+    elif args.command == "banner-grab":
+        banner_grab(args.ip, args.port)
+    elif args.command == "netscan":
+        scan_network(args.range)
+    elif args.command == "whois":
+        whois_lookup(args.domain)
+    elif args.command == "dns":
+        dns_lookup(args.domain)
+    else:
+        parser.print_help()
+
+if __name__ == "__main__":
+    cli_menu()
+    ############$$
 def interactive_menu():
     display_banner()
     while True:
@@ -348,66 +412,4 @@ if __name__ == "__main__":
     else:
         interactive_menu()  # New interactive mode
 
-'''#def cli_menu():
-    display_banner()  # Display the banner when the program starts
-    parser = argparse.ArgumentParser(description="Nettools - Advanced Networking and Cybersecurity Toolkit")
-    subparsers = parser.add_subparsers(dest="command", help="Available commands")
-
-    subparsers.add_parser("private-ip", help="Get all private IP addresses")
-    subparsers.add_parser("public-ip", help="Get public IP address")
-
-    parser_validate = subparsers.add_parser("validate-ip", help="Validate an IP address")
-    parser_validate.add_argument("ip", help="IP address to validate")
-
-    parser_geo = subparsers.add_parser("geoip", help="Geolocate an IP address")
-    parser_geo.add_argument("ip", help="IP address to geolocate")
-
-    parser_reverse = subparsers.add_parser("reverse-dns", help="Reverse DNS lookup")
-    parser_reverse.add_argument("ip", help="IP address for reverse lookup")
-
-    parser_portscan = subparsers.add_parser("port-scan", help="Advanced port scan with security assessment")
-    parser_portscan.add_argument("ip", help="Target IP address")
-    parser_portscan.add_argument("--ports", default="1-1024", help="Port or port range (default 1-1024)")
-    parser_portscan.add_argument("--threads", type=int, default=100, 
-                               help="Number of threads (default 100)")
-
-    parser_banner = subparsers.add_parser("banner-grab", help="Grab service banner")
-    parser_banner.add_argument("ip", help="Target IP address")
-    parser_banner.add_argument("port", help="Target port")
-
-    parser_netscan = subparsers.add_parser("netscan", help="Scan local network for devices")
-    parser_netscan.add_argument("range", help="CIDR or IP range (e.g. 192.168.1.1/24)")
-
-    parser_whois = subparsers.add_parser("whois", help="Whois lookup")
-    parser_whois.add_argument("domain", help="Domain name")
-
-    parser_dns = subparsers.add_parser("dns", help="DNS lookup (A record)")
-    parser_dns.add_argument("domain", help="Domain name")
-
-    args = parser.parse_args()
-
-    if args.command == "private-ip":
-        get_private_ip()
-    elif args.command == "public-ip":
-        get_public_ip()
-    elif args.command == "validate-ip":
-        validate_ip(args.ip)
-    elif args.command == "geoip":
-        get_ip_geolocation(args.ip)
-    elif args.command == "reverse-dns":
-        reverse_ip_domain_check(args.ip)
-    elif args.command == "port-scan":
-        port_scan(args.ip, args.ports, args.threads)
-    elif args.command == "banner-grab":
-        banner_grab(args.ip, args.port)
-    elif args.command == "netscan":
-        scan_network(args.range)
-    elif args.command == "whois":
-        whois_lookup(args.domain)
-    elif args.command == "dns":
-        dns_lookup(args.domain)
-    else:
-        parser.print_help()
-
-if __name__ == "__main__":
-    cli_menu()'''
+#######################################
