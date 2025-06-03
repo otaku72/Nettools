@@ -1,6 +1,19 @@
-socket
-psutil
-requests
-colorama
-scapy
-pyfiglet
+# Networking Tools Requirements
+# Covers both Nettools.py and Nettools_Version2.py
+
+# Core dependencies
+colorama==0.4.6       # Colored console output
+psutil==5.9.5         # System and network utilities
+requests==2.31.0      # HTTP requests for APIs and public IP
+scapy==2.5.0          # Network scanning and packet manipulation
+
+# Version 2 specific
+python-whois==0.9.3   # WHOIS lookups (Nettools_Version2.py)
+dnspython==2.4.2      # DNS queries (Nettools_Version2.py)
+
+# Original version specific
+pyfiglet==0.8.post1   # ASCII banner art (Nettools.py)
+ipaddress==1.0.23     # IP network calculations (Nettools.py)
+
+# Optional (used in some features)
+beautifulsoup4==4.12.2  # HTML parsing (if adding web features)
