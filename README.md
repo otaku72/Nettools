@@ -1,4 +1,4 @@
-#NETTOOLS - Advanced Cybersecurity Toolkit 🔒
+# NETTOOLS - Advanced Cybersecurity Toolkit 🔒
 
 ![Nettools Banner](https://i.imgur.com/JKvQx8E.png)
 
@@ -36,7 +36,7 @@ A multi-functional Python-based networking and security assessment tool with bot
 ### Setup
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/nettools.git
+git clone https://github.com/darksq13/nettools.git
 cd nettools
 
 # Install dependencies
