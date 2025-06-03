@@ -228,7 +228,127 @@ def dns_lookup(domain):
     except Exception as e:
         print(f"{Fore.RED}DNS lookup failed: {e}")
 
-def cli_menu():
+def interactive_menu():
+    display_banner()
+    while True:
+        print(f"\n{Fore.CYAN}Main Menu:{Style.RESET_ALL}")
+        print(f"  {Fore.YELLOW}1{Style.RESET_ALL} - Network Information Tools")
+        print(f"  {Fore.YELLOW}2{Style.RESET_ALL} - Scanning & Reconnaissance")
+        print(f"  {Fore.YELLOW}3{Style.RESET_ALL} - Domain & DNS Tools")
+        print(f"  {Fore.YELLOW}4{Style.RESET_ALL} - Run Single Command")
+        print(f"  {Fore.RED}0{Style.RESET_ALL} - Exit")
+        
+        choice = input(f"{Fore.GREEN}Select an option (0-4): {Style.RESET_ALL}").strip()
+        
+        if choice == "0":
+            print(f"{Fore.YELLOW}\n[+] Exiting Nettools...{Style.RESET_ALL}")
+            break
+            
+        elif choice == "1":
+            while True:
+                print(f"\n{Fore.CYAN}Network Information:{Style.RESET_ALL}")
+                print(f"  {Fore.YELLOW}1{Style.RESET_ALL} - Show private IPs")
+                print(f"  {Fore.YELLOW}2{Style.RESET_ALL} - Show public IP")
+                print(f"  {Fore.YELLOW}3{Style.RESET_ALL} - Validate IP")
+                print(f"  {Fore.YELLOW}4{Style.RESET_ALL} - IP Geolocation")
+                print(f"  {Fore.YELLOW}5{Style.RESET_ALL} - Reverse DNS lookup")
+                print(f"  {Fore.YELLOW}0{Style.RESET_ALL} - Back to main menu")
+                
+                sub_choice = input(f"{Fore.GREEN}Select tool (0-5): {Style.RESET_ALL}").strip()
+                
+                if sub_choice == "0":
+                    break
+                elif sub_choice == "1":
+                    get_private_ip()
+                elif sub_choice == "2":
+                    get_public_ip()
+                elif sub_choice == "3":
+                    ip = input("Enter IP to validate: ").strip()
+                    validate_ip(ip)
+                elif sub_choice == "4":
+                    ip = input("Enter IP for geolocation: ").strip()
+                    get_ip_geolocation(ip)
+                elif sub_choice == "5":
+                    ip = input("Enter IP for reverse DNS: ").strip()
+                    reverse_ip_domain_check(ip)
+                else:
+                    print(f"{Fore.RED}Invalid choice!{Style.RESET_ALL}")
+
+        elif choice == "2":
+            while True:
+                print(f"\n{Fore.CYAN}Scanning Tools:{Style.RESET_ALL}")
+                print(f"  {Fore.YELLOW}1{Style.RESET_ALL} - Port Scan")
+                print(f"  {Fore.YELLOW}2{Style.RESET_ALL} - Banner Grab")
+                print(f"  {Fore.YELLOW}3{Style.RESET_ALL} - Network Scan")
+                print(f"  {Fore.YELLOW}0{Style.RESET_ALL} - Back to main menu")
+                
+                sub_choice = input(f"{Fore.GREEN}Select tool (0-3): {Style.RESET_ALL}").strip()
+                
+                if sub_choice == "0":
+                    break
+                elif sub_choice == "1":
+                    ip = input("Enter target IP: ").strip()
+                    ports = input("Enter port range (e.g. 1-1000): ").strip() or "1-1024"
+                    threads = input("Enter threads (default 100): ").strip() or "100"
+                    port_scan(ip, ports, int(threads))
+                elif sub_choice == "2":
+                    ip = input("Enter target IP: ").strip()
+                    port = input("Enter target port: ").strip()
+                    banner_grab(ip, port)
+                elif sub_choice == "3":
+                    ip_range = input("Enter network range (e.g. 192.168.1.0/24): ").strip()
+                    scan_network(ip_range)
+                else:
+                    print(f"{Fore.RED}Invalid choice!{Style.RESET_ALL}")
+
+        elif choice == "3":
+            while True:
+                print(f"\n{Fore.CYAN}Domain Tools:{Style.RESET_ALL}")
+                print(f"  {Fore.YELLOW}1{Style.RESET_ALL} - WHOIS Lookup")
+                print(f"  {Fore.YELLOW}2{Style.RESET_ALL} - DNS Lookup")
+                print(f"  {Fore.YELLOW}0{Style.RESET_ALL} - Back to main menu")
+                
+                sub_choice = input(f"{Fore.GREEN}Select tool (0-2): {Style.RESET_ALL}").strip()
+                
+                if sub_choice == "0":
+                    break
+                elif sub_choice == "1":
+                    domain = input("Enter domain for WHOIS: ").strip()
+                    whois_lookup(domain)
+                elif sub_choice == "2":
+                    domain = input("Enter domain for DNS lookup: ").strip()
+                    dns_lookup(domain)
+                else:
+                    print(f"{Fore.RED}Invalid choice!{Style.RESET_ALL}")
+
+        elif choice == "4":
+            print(f"\n{Fore.YELLOW}Enter command as you would normally (e.g. 'port-scan 192.168.1.1')")
+            print(f"Type 'back' to return to menu{Style.RESET_ALL}")
+            
+            while True:
+                cmd = input(f"{Fore.GREEN}nettools> {Style.RESET_ALL}").strip()
+                if cmd.lower() == 'back':
+                    break
+                if not cmd:
+                    continue
+                    
+                # Simulate command line arguments
+                sys.argv = ['Nettools_Version2.py'] + cmd.split()
+                try:
+                    cli_menu()
+                except SystemExit:
+                    pass  # Prevent argparse from exiting the program
+        else:
+            print(f"{Fore.RED}Invalid choice! Please select 0-4.{Style.RESET_ALL}")
+
+if __name__ == "__main__":
+    # Check if any arguments were passed
+    if len(sys.argv) > 1:
+        cli_menu()  # Original command-line mode
+    else:
+        interactive_menu()  # New interactive mode
+
+'''#def cli_menu():
     display_banner()  # Display the banner when the program starts
     parser = argparse.ArgumentParser(description="Nettools - Advanced Networking and Cybersecurity Toolkit")
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
@@ -290,4 +410,4 @@ def cli_menu():
         parser.print_help()
 
 if __name__ == "__main__":
-    cli_menu()
+    cli_menu()'''
