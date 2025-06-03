@@ -1,19 +1,25 @@
-# Networking Tools Requirements
-# Covers both Nettools.py and Nettools_Version2.py
-
-# Core dependencies
+# Combined Requirements for Nettools with Cybersecurity Enhancements
+# Core Networking
 colorama==0.4.6       # Colored console output
-psutil==5.9.5         # System and network utilities
-requests==2.31.0      # HTTP requests for APIs and public IP
-scapy==2.5.0          # Network scanning and packet manipulation
+psutil==5.9.5         # System and network monitoring
+requests==2.31.0      # HTTP requests for APIs
+scapy==2.5.0          # Packet manipulation and network scanning
 
-# Version 2 specific
-python-whois==0.9.3   # WHOIS lookups (Nettools_Version2.py)
-dnspython==2.4.2      # DNS queries (Nettools_Version2.py)
+# DNS/WHOIS
+python-whois==0.9.3   # WHOIS lookups
+dnspython==2.4.2      # DNS queries
 
-# Original version specific
-pyfiglet==0.8.post1   # ASCII banner art (Nettools.py)
-ipaddress==1.0.23     # IP network calculations (Nettools.py)
+# Cybersecurity Enhancements
+concurrent-log-handler==0.9.24  # Thread-safe logging
+python-nmap==0.7.1     # Advanced port scanning
+beautifulsoup4==4.12.2 # HTML/XML parsing for service banners
+pyOpenSSL==23.2.0      # SSL/TLS analysis
+cve-search==4.3.0      # CVE vulnerability database (optional)
 
-# Optional (used in some features)
-beautifulsoup4==4.12.2  # HTML parsing (if adding web features)
+# Original Version Extras
+pyfiglet==0.8.post1   # ASCII banner art
+ipaddress==1.0.23     # IP network calculations
+
+# Development Extras (optional)
+pytest==7.4.0         # Testing framework
+mypy==1.5.1           # Static type checking
