@@ -72,7 +72,7 @@ def display_devices(devices):
     Display the list of devices.
     :param devices: A list of devices with IP, MAC, vendor, and hostname.
     """
-    print("\nConnected Devices:")
+    print("\nAll Connected Devices:")
     print("=" * 90)
     print("IP Address\t\tMAC Address\t\tVendor\t\t\tHostname")
     print("=" * 90)
