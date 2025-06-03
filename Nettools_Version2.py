@@ -1,4 +1,4 @@
-Jimimport argparse
+import argparse
 import socket
 import requests
 from scapy.all import ARP, Ether, srp
@@ -7,6 +7,8 @@ import ipaddress
 from colorama import Fore, Style, init
 import sys
 import time
+import concurrent.futures
+from typing import List, Dict
 
 init(autoreset=True)
 
@@ -61,25 +63,107 @@ def reverse_ip_domain_check(ip_address):
     except socket.herror:
         print(f"{Fore.RED}No domain found for {ip_address}")
 
-def port_scan(ip, ports="1-1024"):
-    open_ports = []
+def get_service_banner(ip: str, port: int) -> str:
+    """Attempt to grab service banner from open port"""
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.settimeout(2)
+            s.connect((ip, port))
+            s.send(b'GET / HTTP/1.1\r\n\r\n')
+            return s.recv(1024).decode(errors='ignore').strip()
+    except:
+        return "No banner retrieved"
+
+def check_vulnerabilities(service: str, version: str) -> List[str]:
+    """Check for known vulnerabilities (simplified example)"""
+    vulns = []
+    service = service.lower()
+    
+    # Example vulnerability checks
+    if "ssh" in service and "7.2" in version:
+        vulns.append("CVE-2017-0144: OpenSSH 7.2 vulnerability")
+    if "http" in service and "Apache 2.4.49" in version:
+        vulns.append("CVE-2021-41773: Apache Path Traversal")
+    if "ftp" in service and "vsftpd 2.3.4" in version:
+        vulns.append("CVE-2011-2523: vsftpd backdoor")
+    
+    return vulns
+
+def scan_port(ip: str, port: int) -> Dict:
+    """Scan individual port with security assessment"""
+    result = {
+        'port': port,
+        'open': False,
+        'service': 'unknown',
+        'banner': '',
+        'vulnerabilities': []
+    }
+    
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.settimeout(1)
+            if s.connect_ex((ip, port)) == 0:
+                result['open'] = True
+                banner = get_service_banner(ip, port)
+                result['banner'] = banner
+                
+                # Simple service detection
+                if port == 80 or port == 443:
+                    result['service'] = 'HTTP'
+                elif port == 22:
+                    result['service'] = 'SSH'
+                elif port == 21:
+                    result['service'] = 'FTP'
+                elif port == 3389:
+                    result['service'] = 'RDP'
+                
+                # Vulnerability check
+                result['vulnerabilities'] = check_vulnerabilities(result['service'], banner)
+                
+        return result
+    except Exception as e:
+        print(f"{Fore.RED}Error scanning port {port}: {e}")
+        return result
+
+def port_scan(ip: str, ports: str = "1-1024", threads: int = 100) -> None:
+    """Enhanced port scanner with security features"""
     try:
         if '-' in ports:
             start, end = map(int, ports.split('-'))
-            port_range = range(start, end+1)
+            port_range = range(start, end + 1)
         else:
             port_range = [int(ports)]
     except:
         print(f"{Fore.RED}Invalid port range.")
         return
-    print(f"{Fore.YELLOW}Scanning {ip} ports {ports} ...")
-    for port in port_range:
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.settimeout(0.5)
-            result = s.connect_ex((ip, port))
-            if result == 0:
-                open_ports.append(port)
-                print(f"{Fore.GREEN}Port {port} is open")
+
+    print(f"{Fore.YELLOW}\n[+] Scanning {ip} ports {ports} with security assessment...")
+    print(f"{Fore.CYAN}[*] Using {threads} threads for faster scanning\n")
+    
+    open_ports = []
+    start_time = time.time()
+    
+    with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
+        futures = {executor.submit(scan_port, ip, port): port for port in port_range}
+        
+        for future in concurrent.futures.as_completed(futures):
+            result = future.result()
+            if result['open']:
+                open_ports.append(result)
+                status = f"{Fore.GREEN}OPEN"
+                print(f"{status} {result['port']}/tcp - {result['service']}")
+                print(f"   Banner: {result['banner'][:100]}...")
+                
+                if result['vulnerabilities']:
+                    print(f"{Fore.RED}   [!] Vulnerabilities detected:")
+                    for vuln in result['vulnerabilities']:
+                        print(f"       - {vuln}")
+                print()
+    
+    duration = time.time() - start_time
+    print(f"\n{Fore.CYAN}[*] Scan completed in {duration:.2f} seconds")
+    print(f"{Fore.CYAN}[*] Found {len(open_ports)} open ports")
+    
     if not open_ports:
         print(f"{Fore.YELLOW}No open ports found in range.")
 
@@ -146,9 +230,11 @@ def cli_menu():
     parser_reverse = subparsers.add_parser("reverse-dns", help="Reverse DNS lookup")
     parser_reverse.add_argument("ip", help="IP address for reverse lookup")
 
-    parser_portscan = subparsers.add_parser("port-scan", help="Scan ports on a host")
+    parser_portscan = subparsers.add_parser("port-scan", help="Advanced port scan with security assessment")
     parser_portscan.add_argument("ip", help="Target IP address")
     parser_portscan.add_argument("--ports", default="1-1024", help="Port or port range (default 1-1024)")
+    parser_portscan.add_argument("--threads", type=int, default=100, 
+                               help="Number of threads (default 100)")
 
     parser_banner = subparsers.add_parser("banner-grab", help="Grab service banner")
     parser_banner.add_argument("ip", help="Target IP address")
@@ -176,7 +262,7 @@ def cli_menu():
     elif args.command == "reverse-dns":
         reverse_ip_domain_check(args.ip)
     elif args.command == "port-scan":
-        port_scan(args.ip, args.ports)
+        port_scan(args.ip, args.ports, args.threads)
     elif args.command == "banner-grab":
         banner_grab(args.ip, args.port)
     elif args.command == "netscan":
